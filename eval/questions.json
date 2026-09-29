@@ -1,0 +1,95 @@
+{
+  "_about": "Business questions with expected answers from hand-written gold SQL. An agent answer counts as correct if its final query result or its text contains the expected value (numbers within 1%). Expected values are unrounded. v2 of the set rewords the customer-count question to be explicit about order status (it conflicted with the agent's default rule of excluding canceled orders).",
+  "questions": [
+    {
+      "q": "How many orders were delivered?",
+      "gold_sql": "SELECT count(*) FROM gold.fact_orders WHERE order_status='delivered'",
+      "expected": 96470.0
+    },
+    {
+      "q": "How many unique customers have placed an order (of any status)?",
+      "gold_sql": "SELECT count(DISTINCT customer_key) FROM gold.fact_orders",
+      "expected": 96088.0
+    },
+    {
+      "q": "How many sellers are on the marketplace?",
+      "gold_sql": "SELECT count(*) FROM gold.dim_seller",
+      "expected": 3095.0
+    },
+    {
+      "q": "Which product category generated the most product revenue?",
+      "gold_sql": "SELECT p.category FROM gold.fact_sales f JOIN gold.dim_product p USING(product_key) WHERE order_status NOT IN ('canceled','unavailable') GROUP BY 1 ORDER BY sum(price) DESC LIMIT 1",
+      "expected": "health_beauty"
+    },
+    {
+      "q": "What is the average review score of delivered orders?",
+      "gold_sql": "SELECT avg(review_score) FROM gold.fact_orders WHERE order_status='delivered'",
+      "expected": 4.155879529136751
+    },
+    {
+      "q": "Which customer state has the most orders?",
+      "gold_sql": "SELECT c.state FROM gold.fact_orders o JOIN gold.dim_customer c USING(customer_key) GROUP BY 1 ORDER BY count(*) DESC LIMIT 1",
+      "expected": "SP"
+    },
+    {
+      "q": "What is the most common payment type?",
+      "gold_sql": "SELECT payment_type FROM gold.fact_orders WHERE payment_type IS NOT NULL AND order_status NOT IN ('canceled','unavailable') GROUP BY 1 ORDER BY count(*) DESC LIMIT 1",
+      "expected": "credit_card"
+    },
+    {
+      "q": "What percentage of delivered orders arrived late?",
+      "gold_sql": "SELECT 100*avg(is_late::INT) FROM gold.fact_orders WHERE order_status='delivered' AND is_late IS NOT NULL",
+      "expected": 6.7730900798175595
+    },
+    {
+      "q": "In which month (YYYY-MM) were the most orders placed?",
+      "gold_sql": "SELECT strftime(purchased_at,'%Y-%m') FROM gold.fact_orders GROUP BY 1 ORDER BY count(*) DESC LIMIT 1",
+      "expected": "2017-11"
+    },
+    {
+      "q": "What is the average delivery time in days for delivered orders?",
+      "gold_sql": "SELECT avg(delivery_days) FROM gold.fact_orders WHERE order_status='delivered'",
+      "expected": 12.496848761272934
+    },
+    {
+      "q": "How many orders were canceled?",
+      "gold_sql": "SELECT count(*) FROM gold.fact_orders WHERE order_status='canceled'",
+      "expected": 625.0
+    },
+    {
+      "q": "What is the average review score for orders that arrived late?",
+      "gold_sql": "SELECT avg(review_score) FROM gold.fact_orders WHERE is_late",
+      "expected": 2.270604826073331
+    },
+    {
+      "q": "Which seller state has the most sellers?",
+      "gold_sql": "SELECT state FROM gold.dim_seller GROUP BY 1 ORDER BY count(*) DESC LIMIT 1",
+      "expected": "SP"
+    },
+    {
+      "q": "How many customers placed more than one order?",
+      "gold_sql": "SELECT count(*) FROM (SELECT customer_key FROM gold.fact_orders WHERE order_status NOT IN ('canceled','unavailable') GROUP BY 1 HAVING count(*)>1)",
+      "expected": 2888.0
+    },
+    {
+      "q": "What was total product revenue in 2017?",
+      "gold_sql": "SELECT sum(price) FROM gold.fact_sales f JOIN gold.dim_date d ON f.purchase_date_key=d.date_key WHERE d.year=2017 AND order_status NOT IN ('canceled','unavailable')",
+      "expected": 6108195.97
+    },
+    {
+      "q": "What is the average number of payment installments for credit card orders?",
+      "gold_sql": "SELECT avg(installments) FROM gold.fact_orders WHERE payment_type='credit_card' AND order_status NOT IN ('canceled','unavailable')",
+      "expected": 3.5528613258848454
+    },
+    {
+      "q": "Which product category has the lowest average review score among categories with at least 500 items sold?",
+      "gold_sql": "SELECT p.category FROM gold.fact_sales f JOIN gold.dim_product p USING(product_key) WHERE review_score IS NOT NULL GROUP BY 1 HAVING count(*)>=500 ORDER BY avg(review_score) LIMIT 1",
+      "expected": "office_furniture"
+    },
+    {
+      "q": "What share of revenue comes from the top 10 sellers, in percent?",
+      "gold_sql": "WITH s AS (SELECT seller_key, sum(price) r FROM gold.fact_sales WHERE order_status NOT IN ('canceled','unavailable') GROUP BY 1) SELECT 100*(SELECT sum(r) FROM (SELECT r FROM s ORDER BY r DESC LIMIT 10))/sum(r) FROM s",
+      "expected": 13.204995527375518
+    }
+  ]
+}

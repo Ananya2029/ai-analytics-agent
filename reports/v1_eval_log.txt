@@ -1,0 +1,28 @@
+[ 1] OK     15.8s  calls 1  errors 0  How many orders were delivered?
+[ 2] MISS   21.8s  calls 1  errors 0  How many unique customers are there?
+[ 3] OK     95.9s  calls 5  errors 4  How many sellers are on the marketplace?
+[ 4] MISS    0.0s  calls 0  errors 0  Which product category generated the most product revenue?
+[ 5] MISS   45.8s  calls 1  errors 1  What is the average review score of delivered orders?
+[ 6] MISS   23.0s  calls 1  errors 1  Which customer state has the most orders?
+[ 7] OK     15.6s  calls 1  errors 0  What is the most common payment type?
+[ 8] MISS   26.0s  calls 1  errors 1  What percentage of delivered orders arrived late?
+[ 9] OK     55.0s  calls 2  errors 1  In which month (YYYY-MM) were the most orders placed?
+[10] MISS   29.9s  calls 1  errors 1  What is the average delivery time in days for delivered orde
+[11] OK     12.9s  calls 1  errors 0  How many orders were canceled?
+[12] MISS   47.3s  calls 1  errors 0  What is the average review score for orders that arrived lat
+[13] MISS  236.7s  calls 10  errors 10  Which seller state has the most sellers?
+[14] MISS   23.0s  calls 1  errors 0  How many customers placed more than one order?
+[15] MISS   18.2s  calls 0  errors 0  What was total product revenue in 2017?
+[16] MISS  235.9s  calls 8  errors 8  What is the average number of payment installments for credi
+[17] MISS   24.3s  calls 1  errors 1  Which product category has the lowest average review score a
+[18] MISS  163.6s  calls 2  errors 2  What share of revenue comes from the top 10 sellers, in perc
+{
+  "llm": "ollama:qwen2.5:3b",
+  "questions": 18,
+  "accuracy": 0.278,
+  "avg_tool_calls": 2.11,
+  "questions_with_sql_error": 10,
+  "recovered_after_sql_error": 2,
+  "median_seconds": 25.15,
+  "total_minutes": 28.6
+}

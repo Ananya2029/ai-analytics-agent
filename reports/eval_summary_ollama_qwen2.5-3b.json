@@ -1,0 +1,10 @@
+{
+  "llm": "ollama:qwen2.5:3b",
+  "questions": 18,
+  "accuracy": 0.444,
+  "avg_tool_calls": 1.72,
+  "questions_with_sql_error": 4,
+  "recovered_after_sql_error": 0,
+  "median_seconds": 18.8,
+  "total_minutes": 14.6
+}
